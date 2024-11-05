@@ -1,0 +1,154 @@
+* Identificar las entidades principales (Tablas) y sus atributos (Campos) para el caso de estudio.
+// Base de datos de La Fábrica de Cajas Mágicas
+
+Table clientes {
+  id integer [primary key] // Clave primaria de la entidad cliente
+  nombre varchar // Nombre del cliente
+  correo varchar // Correo electrónico del cliente
+  telefono varchar // Número de teléfono del cliente
+  direccion varchar // Dirección del cliente
+  fecha_registro date // Fecha en la que el cliente se registró
+  estatus varchar // Estado del cliente: Activo, Inactivo.
+}
+
+Table pedidos {
+  id integer [primary key] // Clave primaria de la entidad pedido
+  id_cliente integer // Relación con la entidad: clientes
+  formato_pedido varchar // Forma de generación del pedido: En Tienda o On line.
+  fecha_pedido date // Fecha en la que se realizó el pedido
+  estado varchar // Estado del pedido: En producción, Enviado, Entregado.
+  fecha_entrega date // Fecha estimada de entrega del pedido
+  id_diseño integer // Relación con la entidad: diseños 
+  prototipo_3d varchar // Link o referencia a la imagen del prototipo virtual
+  seguimiento_envio varchar // Información de seguimiento del envío en tiempo real
+}
+
+Table cajas {
+  id integer [primary key] // Clave primaria de la entidad caja
+  nombre varchar // Nombre del tipo de caja
+  descripcion varchar // Descripción de la caja
+  caracteristicas text // Características de la caja
+  precio decimal // Precio de la caja
+  id_pedido integer // Relación con la entidad: pedidos
+  id_diseño integer // Relación con la entidad: diseños
+  control_calidad boolean // Indicador de verificación de calidad
+  mensaje_personalizado text // Mensaje personalizado del cliente
+}
+
+Table contenido_caja {
+  id integer [primary key] // Clave primaria de la entidad contenido_caja
+  id_caja integer // Relación con la entidad: cajas
+  id_tipocontenido integer // Relación con la entidad: tipo_contenido
+  cantidad integer // Cantidad del tipo de contenido
+}
+
+Table tipo_contenido {
+  id integer [primary key] // Clave primaria de la entidad tipo_contenido
+  descripcion varchar // Descripción del contenido
+}
+
+Table materiales {
+  id integer [primary key] // Clave primaria de la entidad material
+  nombre varchar // Nombre del material
+  origen varchar // Origen del material
+  propiedades varchar // Propiedades o características específicas del material
+  color varchar // color especifico del material
+  cantidad_stock integer // Cantidad en el inventario
+  umbral_reposicion integer // Nivel mínimo de inventario para reposición
+  precio_unitario decimal // Precio por unidad del material
+  estatus varchar // Estado del material: Disponible, Agotado, etc.
+  id_proveedor integer // Relacion con la entidad: proveedores
+  fecha_suministro date // Fecha en la que el proveedor suministró el material
+}
+
+Table artesanos {
+  id integer [primary key] // Clave primaria de la entidad artesano
+  nombre varchar // Nombre del artesano
+  especialidad varchar // Especialidad del artesano (Ejemplo: ensamblaje, pintura)
+  estatus varchar // Estado laboral del artesano
+  fecha_contratacion date // Fecha de contratación del artesano
+}
+
+Table proveedores {
+  id integer [primary key] // Clave primaria de la entidad proveedor
+  nombre varchar // Nombre del proveedor
+  contacto varchar // Información de contacto del proveedor
+  especialidad varchar // Especialidad del proveedor en relación a materiales
+  acuerdos_comerciales varchar // Acuerdos comerciales entre la fábrica y el proveedor
+  estatus varchar // Estado del proveedor: Activo, Inactivo, etc.
+}
+
+Table cajas_materiales {
+  id integer [primary key] // Clave primaria de la entidad cajas_materiales
+  id_caja integer // Relación con la entidad: cajas
+  id_material integer // Relación con la entidad: materiales
+  cantidad_usada integer // Cantidad del material usado en la caja específica
+}
+
+Table pedidos_artesanos {
+  id integer [primary key] // Clave primaria de la entidad pedidos_artesanos
+  id_pedido integer // Relación con la entidad: pedidos
+  id_artesano integer // Relación con la entidad: artesanos
+  rol varchar // Rol del artesano en el pedido, Ej: Principal, Asistente
+  fecha_asignacion date // Fecha de asignación del artesano al pedido
+}
+
+Table calendario_produccion {
+  id integer [primary key] // Clave primaria de la entidad calendario_produccion
+  tarea varchar // Tarea específica de producción, Ej: Diseño, Ensamblaje, Envío
+  fecha_inicio date // Fecha de inicio de la tarea
+  fecha_limite date // Fecha límite de la tarea
+  estado varchar // Estado de la tarea: Pendiente, En proceso, Completada
+}
+
+Table diseños {
+  id integer [primary key] // Clave primaria de la entidad diseño
+  nombre varchar // Nombre del diseño
+  descripcion varchar // Descripción del diseño
+  colores text // Colores utilizados en el diseño
+  tipo varchar // Tipo de diseño, Ej: Caja básica, Caja premium
+  prototipo_virtual varchar // imagen del prototipo virtual
+}
+
+Table presupuesto { 
+  id integer [primary key] // Clave primaria de la entidad presupuesto
+  id_pedido integer // Relación con la entidad: pedido
+  total decimal // Monto total del presupuesto
+}
+
+Table facturas {
+  id integer [primary key] // Clave primaria de la entidad factura
+  id_pedido integer // Relación con la entidad: pedido
+  fecha_emision date // Fecha de emisión de la factura
+  monto_total decimal // Monto total de la factura
+  estado varchar // Estado de la factura: Pendiente, Pagada, Vencida
+}
+
+Table marketing {
+  id integer [primary key] // Clave primaria de la entidad marketing
+  id_diseño integer // Relación con la entidad: diseño
+  estrategia varchar // Estrategia de marketing digital utilizada
+  fecha_inicio date // Fecha de inicio de la campaña de marketing
+  fecha_fin date // Fecha de fin de la campaña de marketing
+  plataforma varchar // Plataforma de marketing utilizada: Redes sociales, Email, etc.
+  resultados json // Métricas de rendimiento de la campaña
+}
+
+Table redes_sociales {
+  id integer [primary key] // Clave primaria de la entidad redes_sociales
+  id_marketing integer // Relación con la entidad: marketing
+  plataforma varchar // Plataforma de redes sociales utilizada: Facebook, Instagram, etc.
+  historia_cliente text // Historias o testimonios de clientes relacionados con la campaña
+  engagement integer // Número de interacciones (me gusta, compartidos, etc.) en la campaña
+}
+Table pagos {
+  id integer [primary key] // Clave primaria de la entidad
+  id_pedido integer // Relación con la entidad: pedidos
+  fecha_pago date // Fecha en que se realizó el pago
+  monto decimal // Monto total pagado
+  metodo varchar // Método de pago: Presencial, En línea
+  estado varchar // Estado del pago: Pendiente, Completado, Fallido
+  referencia_pago varchar // Código de referencia del pago (transacción, factura, etc.)
+  comprobante_pago varchar // Link o referencia al comprobante de pago digital, si aplica
+}
+
