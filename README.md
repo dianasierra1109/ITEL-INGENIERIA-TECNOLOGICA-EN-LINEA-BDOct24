@@ -22,6 +22,7 @@ Equipo: <br>
 Tarea 1.1: Análisis detallado de los casos de estudio: <br>
 <ul>
     <li>Identificar las entidades principales y sus atributos para cada caso.</li>
+    <li>Definir las relaciones entre las entidades (uno a uno, uno a muchos, muchos a muchos).</li>
 </ul>
 
 

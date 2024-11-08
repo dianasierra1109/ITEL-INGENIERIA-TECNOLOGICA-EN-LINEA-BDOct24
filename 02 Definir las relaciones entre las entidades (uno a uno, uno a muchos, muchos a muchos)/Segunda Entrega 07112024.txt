@@ -1,0 +1,19 @@
+Definir las relaciones entre las entidades (uno a uno, uno a muchos, muchos a muchos).
+
+Relación -> pedidos.id_cliente (muchos a uno) clientes.id  
+Relación -> cajas.id_pedido (muchos a uno) pedidos.id  
+Relación -> cajas_materiales.id_caja (muchos a uno) cajas.id  
+Relación -> cajas_materiales.id_material (uno a uno) materiales.id  
+Relación -> pedidos_artesanos.id_pedido (muchos a uno) pedidos.id  
+Relación -> pedidos_artesanos.id_artesano (uno a uno) artesanos.id  
+Relación -> materiales.id_proveedor (muchos a uno) proveedores.id  
+Relación -> calendario_produccion.id (uno a uno) pedidos.id  
+Relación -> presupuesto.id_pedido (uno a uno) pedidos.id  
+Relación -> facturas.id_pedido (uno a uno) pedidos.id  
+Relación -> diseños.id (muchos a uno) pedidos.id_diseño  
+Relación -> cajas.id_diseño (muchos a muchos) diseños.id  
+Relación -> marketing.id_diseño (muchos a muchos) diseños.id  
+Relación -> redes_sociales.id_marketing (muchos a uno) marketing.id  
+Relación -> pedidos.id (uno a uno) pagos.id_pedido  
+Relación -> contenido_caja.id (muchos a uno) cajas.id  
+Relación -> tipo_contenido.id (uno a uno) contenido_caja.id_tipocontenido  
