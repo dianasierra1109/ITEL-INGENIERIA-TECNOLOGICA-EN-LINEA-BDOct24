@@ -24,9 +24,9 @@ Equipo: <br>
     - [x] Definir las relaciones entre las entidades (uno a uno, uno a muchos, muchos a muchos).
     - [x] Crear diagramas de entidad-relación (DER) para visualizar las estructuras de datos.
 - [ ] Tarea 1.2: Diseño de las tablas en PostgreSQL:
-    - [ ] Crear las tablas en PostgreSQL utilizando el lenguaje SQL, definiendo los tipos de datos adecuados para cada columna (enteros, texto, fechas, etc.).
-    - [ ] Establecer las claves primarias y foráneas para garantizar la integridad de los datos.
-    - [ ] Crear índices para mejorar el rendimiento de las consultas.
+    - [x] Crear las tablas en PostgreSQL utilizando el lenguaje SQL, definiendo los tipos de datos adecuados para cada columna (enteros, texto, fechas, etc.).
+    - [x] Establecer las claves primarias y foráneas para garantizar la integridad de los datos.
+    - [x] Crear índices para mejorar el rendimiento de las consultas.
 - [ ] Tarea 1.3: Normalización de las tablas:
     - [ ] Aplicar las reglas de normalización (primera, segunda y tercera forma normal) para asegurar la consistencia y reducir la redundancia de los datos.
 - [ ] Tarea 1.4: Creación de vistas:
