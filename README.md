@@ -23,7 +23,7 @@ Equipo: <br>
     - [x] Identificar las entidades principales y sus atributos para cada caso.
     - [x] Definir las relaciones entre las entidades (uno a uno, uno a muchos, muchos a muchos).
     - [x] Crear diagramas de entidad-relación (DER) para visualizar las estructuras de datos.
-- [ ] Tarea 1.2: Diseño de las tablas en PostgreSQL:
+- [x] Tarea 1.2: Diseño de las tablas en PostgreSQL:
     - [x] Crear las tablas en PostgreSQL utilizando el lenguaje SQL, definiendo los tipos de datos adecuados para cada columna (enteros, texto, fechas, etc.).
     - [x] Establecer las claves primarias y foráneas para garantizar la integridad de los datos.
     - [x] Crear índices para mejorar el rendimiento de las consultas.
