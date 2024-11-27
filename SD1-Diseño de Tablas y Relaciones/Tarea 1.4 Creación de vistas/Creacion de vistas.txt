@@ -1,0 +1,224 @@
+Tarea 1.4: Creación de vistas:
+	• Crear vistas para simplificar consultas complejas y proporcionar acceso restringido a ciertos datos.
+
+1) Vista de Pedidos con Información del Cliente, esta vista muestra detalles de los pedidos junto con los datos del cliente.
+
+CREATE VIEW vista_pedidos_clientes AS
+SELECT 
+    p.id AS id_pedido,
+    c.nombre AS cliente,
+    c.correo AS correo_cliente,
+    p.formato_pedido,
+    p.fecha_pedido,
+    p.estado,
+    p.fecha_entrega
+FROM pedidos p
+JOIN clientes c ON p.id_cliente = c.id;
+
+2) Vista de Cajas con su Contenido, muestra los detalles de las cajas y su contenido, incluyendo el tipo de contenido.
+
+CREATE VIEW vista_cajas_contenido AS
+SELECT 
+    ca.id AS id_caja,
+    ca.nombre AS caja,
+    tc.descripcion AS tipo_contenido,
+    cc.cantidad AS cantidad_contenido
+FROM contenido_caja cc
+JOIN cajas ca ON cc.id_caja = ca.id
+JOIN tipo_contenido tc ON cc.id_tipocontenido = tc.id;
+
+3) Vista de Pedidos Asignados a Artesanos, muestra los artesanos asignados a cada pedido, con su rol y fecha de asignación.
+
+CREATE VIEW vista_pedidos_artesanos AS
+SELECT 
+    pa.id_pedido,
+    ar.nombre AS artesano,
+    pa.rol,
+    pa.fecha_asignacion
+FROM pedidos_artesanos pa
+JOIN artesanos ar ON pa.id_artesano = ar.id;
+
+4) Vista de Materiales por Cajas, relaciona los materiales utilizados para cada caja, incluyendo la cantidad usada.
+
+CREATE VIEW vista_materiales_cajas AS
+SELECT 
+    ca.nombre AS caja,
+    m.nombre AS material,
+    cm.cantidad_usada
+FROM cajas_materiales cm
+JOIN cajas ca ON cm.id_caja = ca.id
+JOIN materiales m ON cm.id_material = m.id;
+
+5) Vista de Pagos de Pedidos, muestra los pagos realizados para cada pedido, incluyendo el método y estado del pago.
+
+CREATE VIEW vista_pagos_pedidos AS
+SELECT 
+    p.id_pedido,
+    p.fecha_pago,
+    p.monto,
+    p.metodo,
+    p.estado
+FROM pagos p;
+
+6) Vista de Resumen de Facturas, incluye los pedidos y su correspondiente factura.
+
+CREATE VIEW vista_facturas AS
+SELECT 
+    f.id AS id_factura,
+    f.id_pedido,
+    f.fecha_emision,
+    f.monto_total,
+    f.estado
+FROM facturas f;
+
+7) Vista de Clientes Activos con Pedidos, esta vista muestra clientes que tienen pedidos en estados específicos, como "pendiente" o "en proceso".
+
+CREATE VIEW vista_clientes_activos AS
+SELECT 
+    c.id AS id_cliente,
+    c.nombre AS nombre_cliente,
+    c.correo AS correo_cliente,
+    c.telefono,
+    c.fecha_registro,
+    p.id AS id_pedido,
+    p.estado AS estado_pedido
+FROM clientes c
+JOIN pedidos p ON c.id = p.id_cliente
+WHERE p.estado IN ('pendiente', 'en proceso');
+
+8) Vista de Diseño más Utilizado, muestra el diseño más frecuente utilizado en pedidos y cajas.
+
+CREATE VIEW vista_diseno_popular AS
+SELECT 
+    d.id AS id_diseno,
+    d.nombre AS diseno,
+    COUNT(DISTINCT p.id) AS veces_en_pedidos,
+    COUNT(DISTINCT ca.id) AS veces_en_cajas
+FROM disenos d
+LEFT JOIN pedidos p ON d.id = p.id_diseño
+LEFT JOIN cajas ca ON d.id = ca.id_diseño
+GROUP BY d.id, d.nombre
+ORDER BY veces_en_pedidos DESC, veces_en_cajas DESC
+LIMIT 1;
+
+9) Vista de Inventario Crítico, muestra materiales cuyo stock está por debajo del umbral de reposición.
+
+CREATE VIEW vista_inventario_critico AS
+SELECT 
+    m.id AS id_material,
+    m.nombre AS material,
+    m.cantidad_stock AS stock_actual,
+    m.umbral_reposicion AS umbral
+FROM materiales m
+WHERE m.cantidad_stock < m.umbral_reposicion;
+
+10) Vista de Producción Pendiente, muestra tareas de producción que están pendientes de completarse en el calendario.
+
+CREATE VIEW vista_produccion_pendiente AS
+SELECT 
+    cp.id AS id_tarea,
+    cp.tarea,
+    cp.fecha_inicio,
+    cp.fecha_limite,
+    cp.estado
+FROM calendario_produccion cp
+WHERE cp.estado NOT IN ('completada', 'cancelada');
+
+11) Vista de Pedidos con Problemas de Entrega, muestra pedidos cuya fecha de entrega ya pasó y no están completados.
+
+CREATE VIEW vista_pedidos_problemas_entrega AS
+SELECT 
+    p.id AS id_pedido,
+    c.nombre AS cliente,
+    p.estado AS estado_pedido,
+    p.fecha_pedido,
+    p.fecha_entrega
+FROM pedidos p
+JOIN clientes c ON p.id_cliente = c.id
+WHERE p.fecha_entrega < CURRENT_DATE AND p.estado NOT IN ('completado', 'cancelado');
+
+12) Vista de Proveedores Activos, muestra proveedores que actualmente tienen materiales suministrados.
+
+CREATE VIEW vista_proveedores_activos AS
+SELECT 
+    pr.id AS id_proveedor,
+    pr.nombre AS proveedor,
+    pr.contacto,
+    COUNT(m.id) AS materiales_suministrados
+FROM proveedores pr
+JOIN materiales m ON pr.id = m.id_proveedor
+GROUP BY pr.id, pr.nombre, pr.contacto
+HAVING COUNT(m.id) > 0;
+
+13) Vista de Costos por Pedido, muestra un desglose de los costos asociados a cada pedido, tomando en cuenta el presupuesto y las facturas.
+
+CREATE VIEW vista_costos_pedido AS
+SELECT 
+    p.id AS id_pedido,
+    COALESCE(pre.total, 0) AS presupuesto_total,
+    COALESCE(f.monto_total, 0) AS monto_facturado,
+    CASE 
+        WHEN f.monto_total IS NULL THEN 'Pendiente'
+        ELSE 'Facturado'
+    END AS estado_factura
+FROM pedidos p
+LEFT JOIN presupuesto pre ON p.id = pre.id_pedido
+LEFT JOIN facturas f ON p.id = f.id_pedido;
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+Aplicación de restricciones de acceso utilizando la vista_pedidos_clientes:
+--------------------------------------------------
+Vista de Pedidos con Información del Cliente, aquí otorgamos acceso de solo lectura a un rol llamado empleados_ventas
+GRANT SELECT ON vista_pedidos_clientes TO empleados_ventas;
+Ahora revocamos cualquier permiso previo de modificación:
+REVOKE INSERT, UPDATE, DELETE ON vista_pedidos_clientes FROM empleados_ventas;
+Vista de Cajas con su Contenido, aquí permitimos acceso a un usuario específico usuario_logistica para solo consultar esta vista
+GRANT SELECT ON vista_cajas_contenido TO usuario_logistica;
+Ahora revocamos permisos de cualquier otro tipo (si aplican):
+REVOKE ALL PRIVILEGES ON vista_cajas_contenido FROM usuario_logistica;
+
+Aplicación de restricciones de acceso utilizando la vista_pedidos_artesanos :
+--------------------------------------------------
+Vista de Pedidos Asignados a Artesanos, aquí otorgamos permisos de consulta a un rol llamado coordinadores_produccion
+GRANT SELECT ON vista_pedidos_artesanos TO coordinadores_produccion;
+Ahora revocamos permisos de usuarios no autorizados:
+REVOKE ALL PRIVILEGES ON vista_pedidos_artesanos FROM PUBLIC;
+
+Aplicación de restricciones de acceso utilizando la vista_materiales_cajas  :
+--------------------------------------------------
+Vista de Materiales por Cajas, aquí permitimos acceso a un rol llamado control_inventario y denegar acceso al público general:
+GRANT SELECT ON vista_materiales_cajas TO control_inventario;
+REVOKE ALL PRIVILEGES ON vista_materiales_cajas FROM PUBLIC;
+
+Aplicación de restricciones de acceso utilizando la vista_pagos_pedidos  :
+--------------------------------------------------
+Vista de Pagos de Pedidos, aquí otorgamos acceso a un usuario específico usuario_finanzas:
+GRANT SELECT ON vista_pagos_pedidos TO usuario_finanzas;
+Ahora denegamos acceso a roles no autorizados:
+REVOKE ALL PRIVILEGES ON vista_pagos_pedidos FROM PUBLIC;
+
+Aplicación de restricciones de acceso utilizando la vista_facturas  :
+--------------------------------------------------
+Vista de Resumen de Facturas, aquí permitimos acceso de solo consulta al rol administradores:
+GRANT SELECT ON vista_facturas TO administradores;
+Ahora denegamos cualquier tipo de acceso a usuarios no autorizados:
+REVOKE ALL PRIVILEGES ON vista_facturas FROM PUBLIC;
+
+Aplicación de restricciones de acceso utilizando la vista vista_clientes_activos:
+--------------------------------------------------
+Primero, creamos un rol con permisos limitados.
+CREATE ROLE acceso_clientes_activos NOLOGIN;
+Segundo, damos permisos sobre la vista.
+GRANT SELECT ON vista_clientes_activos TO acceso_clientes_activos;
+Tercero, quitar acceso directo a las tablas.
+REVOKE SELECT ON clientes FROM acceso_clientes_activos;
+REVOKE SELECT ON pedidos FROM acceso_clientes_activos;
+Cuarto, asignar usuarios al rol.
+GRANT acceso_clientes_activos TO usuario_restringido;
+Con esto el usuario usuario_restringido solo podrá consultar los datos a través de la vista vista_clientes_activos. No podrá acceder directamente a las tablas base clientes ni pedidos, lo que refuerza la seguridad y garantiza acceso restringido según la vista.
+
+
+
+
+

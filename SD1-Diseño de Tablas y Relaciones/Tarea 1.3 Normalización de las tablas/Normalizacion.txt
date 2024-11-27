@@ -1,0 +1,28 @@
+Tarea 1.3: Normalización de las tablas:
+
+• Aplicar las reglas de normalización (primera, segunda y tercera forma normal) para asegurar la consistencia y reducir la redundancia de los datos.
+
+	1era. Forma Normal (1NF), La Primera Forma Normal (1NF) establece que:
+		o Todos los atributos deben contener solo valores atómicos, es decir, indivisibles.
+		o Cada atributo debe contener un único valor por registro.
+	Cumplimiento:
+		o Cada tabla tiene atributos que contienen valores atómicos. Por ejemplo, clientes.nombre y clientes.correo son valores indivisibles.
+		o No hay valores repetitivos en una sola columna ni conjuntos de valores que puedan dividirse más.
+		o En general, todos los campos cumplen con 1NF, ya que cada celda contiene un solo valor (por ejemplo, los atributos en la tabla cajas o clientes).
+	Conclusión: La base de datos cumple con la Primera Forma Normal.
+
+	2da Forma Normal (2NF), La Segunda Forma Normal (2NF) requiere que:
+		o La base de datos cumpla la 1NF.
+		o No haya dependencias parciales, es decir, que ningún atributo dependa solo de una parte de la clave primaria en tablas donde la clave primaria sea 		compuesta.
+	Cumplimiento:
+		o Todas las tablas tienen claves primarias simples (un único atributo), por lo que no hay clave compuesta.
+		o Los atributos en cada tabla dependen completamente de la clave primaria. Por ejemplo, en la tabla clientes, todos los atributos (nombre, correo, 		telefono, etc.) dependen del id del cliente.
+	Conclusión: La base de datos cumple con la Segunda Forma Normal.
+
+	3era Forma Normal (3NF), La Tercera Forma Normal (3NF) establece que:
+		o La base de datos debe cumplir la 2NF.
+		o No debe haber dependencias transitivas, es decir, ningún atributo no clave debe depender de otro atributo no clave.
+	Cumplimiento:
+		o En las tablas clientes, pedidos, cajas, etc., no hay atributos no clave que dependan de otros atributos no clave. Por ejemplo, en clientes, todos los 		campos (como nombre, correo) dependen directamente de la clave primaria (id). En pedidos, todos los atributos como formato_pedido, estado y 		fecha_entrega dependen del id de la tabla pedidos, sin depender de otros atributos no clave.
+		o Las relaciones entre tablas son también adecuadas y no generan dependencias transitivas en los datos.
+	Conclusión: La base de datos cumple con la Tercera Forma Normal.
