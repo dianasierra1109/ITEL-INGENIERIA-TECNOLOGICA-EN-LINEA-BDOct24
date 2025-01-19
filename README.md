@@ -27,10 +27,10 @@ Equipo: <br>
     - [x] Crear las tablas en PostgreSQL utilizando el lenguaje SQL, definiendo los tipos de datos adecuados para cada columna (enteros, texto, fechas, etc.).
     - [x] Establecer las claves primarias y foráneas para garantizar la integridad de los datos.
     - [x] Crear índices para mejorar el rendimiento de las consultas.
-- [ ] Tarea 1.3: Normalización de las tablas:
-    - [ ] Aplicar las reglas de normalización (primera, segunda y tercera forma normal) para asegurar la consistencia y reducir la redundancia de los datos.
-- [ ] Tarea 1.4: Creación de vistas:
-    - [ ] Crear vistas para simplificar consultas complejas y proporcionar acceso restringido a ciertos datos.
+- [x] Tarea 1.3: Normalización de las tablas:
+    - [x] Aplicar las reglas de normalización (primera, segunda y tercera forma normal) para asegurar la consistencia y reducir la redundancia de los datos.
+- [x] Tarea 1.4: Creación de vistas:
+    - [x] Crear vistas para simplificar consultas complejas y proporcionar acceso restringido a ciertos datos.
 
 <br>
 <hr/>
