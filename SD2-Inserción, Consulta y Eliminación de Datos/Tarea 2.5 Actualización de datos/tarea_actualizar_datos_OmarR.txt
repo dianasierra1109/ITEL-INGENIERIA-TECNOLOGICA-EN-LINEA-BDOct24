@@ -1,0 +1,52 @@
+--Actualización de registros
+
+--Actualización de artesanos
+UPDATE artesanos
+	SET nombre = 'Ron Weasley', especialidad = 'Confundir', fecha_contratacion = '2024-09-11'
+	WHERE id_artesanos = 1;
+
+--Actualización de clientes
+UPDATE clientes
+	SET nombre = 'Peter Pettigrew', direccion = '5 winston', fecha_registro = '2024-01-01', telefono ='80015', correo = 'peter@newnow.com' 
+	WHERE id_clientes = 3;
+
+
+--Actualización de diseños
+UPDATE clientes
+	SET nombre = 'Peter Pettigrew', direccion = '5 winston', fecha_registro = '2024-01-01', telefono ='80015', correo = 'peter@newnow.com' 
+	WHERE id_clientes = 3;
+
+--Actualización de diseños
+UPDATE disenos
+	SET nombre = 'Vela eterna', descripcion = 'Vela con gran llama', colores = 'Rojo, Amarillo, Naranja', tipo ='tiempo'
+	WHERE id_disenos = 1;
+
+--Actualización de pedidos
+UPDATE pedidos
+	SET formato_pedido = 'Presencial', fecha_pedido = '2025-01-02', seguimiento_envio = 'Saliendo de Guttenber', estado ='en espera de pago'
+	WHERE id_pedidos = 3;
+
+--Actualización de cajas
+UPDATE cajas
+	SET nombre = 'Caja abrumadora de Dolores', descripcion = 'Caja que genera sueños vacíos', caracteristicas = 'Duplica el reflejo de la luna', precio ='95', mensaje_personalizado = 'Te evitaré los dolores amigo'
+	WHERE id_cajas = 1;
+
+--Actualización de materiales
+	UPDATE materiales
+	SET nombre = 'Semillas de colobozo', origen = 'Cueva de los enanos reptiles', propiedades = 'vitalidad', color ='gris', cantidad_stock = '500', precio_unitario = '15'
+	WHERE id_materiales = 2;
+
+--Actualización de tipo de contenido
+UPDATE tipo_contenido
+	SET descripcion = 'Fuego de las nubes'
+	WHERE id_tipocontenido = 2;
+
+--Actualización calendario de producción
+UPDATE calendario_produccion
+	SET tarea = 'Sellar caja con lava volcánica', fecha_inicio = '2025-02-02'
+	WHERE id_pedido = 3;
+
+--Actualización de redes sociales
+UPDATE redes_sociales
+	SET plataforma = 'Ozzy Boom fred', historia_cliente = 'osos merodeando Fred'
+	WHERE id_redes = 3;
